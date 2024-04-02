@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana-data:/var/lib/grafana # mounting this volume will allow you to save grafana data from launch to launch, but you need to create this with $docker volume create grafana-data
-    restart: unless-stopped
+      - grafana-data:/var/lib/grafana # mounting this volume will allow you to save grafana data from launch to launch, but you need to create this with $ docker volume create grafana-data 
+    restart: unless-stopped           # you can also see that inside the container there are actually files using: $ docker run -it --rm -v grafana-data:/data alpine ls /data
 
   prometheus:
     image: prom/prometheus:latest
