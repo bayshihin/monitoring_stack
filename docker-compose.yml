@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana # mounting this volume will allow you to save grafana data from launch to launch, but you need to create this with $docker volume create grafana-data
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-local-config.yaml:/etc/loki/local-config.yaml
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:latest
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail-local-config.yaml:/etc/promtail/config/promtail-local-config.yaml
+      - /var/log/:/var/log/                                                           # when you mount this volume, your system logs will be added to the promtail scraping procedures 
+    restart: unless-stopped
+
+volumes:
+  grafana-data:
+    external: true
