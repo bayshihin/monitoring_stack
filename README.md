@@ -1,6 +1,6 @@
 # Grafana based monitoring stack
 
-Prometheus, Node Exporter, Loki and Promtail included. Compactor enabled, grafana data mounted.
+Prometheus, Node Exporter, Loki v2.9.5 and Promtail v.2.9.5 included. Compactor enabled, grafana data mounted.
 
 All you need to do is clone the repository and run:
 ```
