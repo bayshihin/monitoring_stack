@@ -10,7 +10,7 @@ services:
     restart: unless-stopped           # you can also see that inside the container there are actually files using: $ docker run -it --rm -v grafana-data:/data alpine ls /data
 
   prometheus:
-    image: prom/prometheus:2.50.1
+    image: prom/prometheus:v2.50.1
     ports:
       - "9090:9090"
     volumes:
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   node_exporter:
-    image: prom/node-exporter:1.7.0
+    image: prom/node-exporter:v1.7.0
     ports:
       - "9100:9100"
     restart: unless-stopped
