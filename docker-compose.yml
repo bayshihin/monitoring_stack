@@ -17,12 +17,16 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command: -config.file=/etc/prometheus/prometheus.yml
     restart: unless-stopped
+    depends_on:
+      - grafana
 
   node_exporter:
     image: prom/node-exporter:v1.7.0
     ports:
       - "9100:9100"
     restart: unless-stopped
+    depends_on:
+      - prometheus
 
   loki:
     image: grafana/loki:2.9.5
@@ -32,6 +36,8 @@ services:
       - ./loki-local-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
+    depends_on:
+      - node_exporter
 
   promtail:
     image: grafana/promtail:2.9.5
@@ -43,6 +49,8 @@ services:
       - /var/log/postgresql/:/var/log/postgresql/                                    # that point for psql main.log
     command: -config.file=/etc/promtail/config/promtail-local-config.yaml
     restart: unless-stopped
+    depends_on:
+      - promtail
 
 volumes:
   grafana-data:
