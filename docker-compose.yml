@@ -50,7 +50,7 @@ services:
     command: -config.file=/etc/promtail/config/promtail-local-config.yaml
     restart: unless-stopped
     depends_on:
-      - promtail
+      - loki
 
 volumes:
   grafana-data:
