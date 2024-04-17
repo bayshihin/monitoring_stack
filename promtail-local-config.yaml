@@ -15,3 +15,12 @@ scrape_configs:
         labels:
           job: logs
           __path__: /var/log/*.log
+
+  - job_name: postgresql
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: postgresql
+          __path__: /var/log/postgresql/*.log
+
