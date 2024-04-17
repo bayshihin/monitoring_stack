@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana-data:/var/lib/grafana # mounting this volume will allow you to save grafana data from launch to launch, but you need to create this with $ docker volume create grafana-data 
-    restart: unless-stopped           # you can also see that inside the container there are actually files using: $ docker run -it --rm -v grafana-data:/data alpine ls /data
+      - grafana-data:/var/lib/grafana   # mounting this volume will allow you to save grafana data from launch to launch, but you need to create this with $ docker volume create grafana-data 
+    restart: unless-stopped             # you can also see that inside the container there are actually files using: $ docker run -it --rm -v grafana-data:/data alpine ls /data
 
   prometheus:
     image: prom/prometheus:v2.50.1
@@ -15,6 +15,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command: -config.file=/etc/prometheus/prometheus.yml
     restart: unless-stopped
 
   node_exporter:
@@ -29,6 +30,7 @@ services:
       - "3100:3100"
     volumes:
       - ./loki-local-config.yaml:/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
 
   promtail:
@@ -37,7 +39,9 @@ services:
       - "9080:9080"
     volumes:
       - ./promtail-local-config.yaml:/etc/promtail/config/promtail-local-config.yaml
-      - /var/log/:/var/log/                                                           # when you mount this volume, your system logs will be added to the promtail scraping procedures 
+      - /var/log/:/var/log/                                                          # when you mount this volume, your system logs will be added to the promtail scraping procedures 
+      - /var/log/postgresql/:/var/log/postgresql/                                    # that point for psql main.log
+    command: -config.file=/etc/promtail/config/promtail-local-config.yaml
     restart: unless-stopped
 
 volumes:
