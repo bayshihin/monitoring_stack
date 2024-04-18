@@ -16,11 +16,18 @@ scrape_configs:
           job: logs
           __path__: /var/log/*.log
 
-  - job_name: postgresql
+  - job_name: containers                               # that part for container logs from docker logs command 
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: containerlogs
+          __path__: /var/lib/docker/containers/*/*log  # for linux only
+
+  - job_name: postgresql                               # that part for apt-version PostgreSQL logs 
     static_configs:
       - targets:
           - localhost
         labels:
           job: postgresql
           __path__: /var/log/postgresql/*.log
-
